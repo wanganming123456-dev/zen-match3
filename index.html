@@ -149,7 +149,7 @@
     <script src="js/main.js?v=3"></script>
     <script src="js/starfield.js"></script>
     <script>
-      if ('serviceWorker' in navigator) {
+      if (location.protocol.startsWith('http') && 'serviceWorker' in navigator) {
         navigator.serviceWorker.getRegistrations().then(function(regs) {
           for (let reg of regs) reg.unregister();
         }).then(function() {
