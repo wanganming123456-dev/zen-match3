@@ -3,7 +3,6 @@ node_modules/
 .claude/
 .playwright-mcp/
 mockup/
-docs/
 test-results/
 Doc4.docx
 CLAUDE.md
