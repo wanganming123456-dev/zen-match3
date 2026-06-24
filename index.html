@@ -11,6 +11,14 @@
 </head>
 <body>
 
+    <!-- 星空背景 -->
+    <canvas id="starfield"></canvas>
+
+    <!-- 光晕装饰 -->
+    <div class="bg-glow glow-1"></div>
+    <div class="bg-glow glow-2"></div>
+    <div class="bg-glow glow-3"></div>
+
     <div class="game-container">
         <!-- 顶部模式切换 Tab -->
         <div class="tab-bar">
@@ -91,6 +99,7 @@
     <script src="js/input/InputManager.js?v=2"></script>
     <script src="js/system/UISystem.js?v=2"></script>
     <script src="js/main.js?v=2"></script>
+    <script src="js/starfield.js"></script>
     <script>
       if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('sw.js');
