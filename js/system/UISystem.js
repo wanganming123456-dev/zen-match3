@@ -13,11 +13,7 @@ class UISystem {
     }
 
     _bindEvents() {
-        if (this.el.btnNew) {
-            this.el.btnNew.addEventListener('click', () => {
-                this._restartCurrentMode();
-            });
-        }
+        // 按钮事件统一由 main.js 管理，UISystem 只负责 UI 更新
     }
 
     /** 由外部调用，初始化游戏后更新 UI */
