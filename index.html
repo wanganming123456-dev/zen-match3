@@ -67,6 +67,51 @@
             <span>⏱️ 剩余时间: <strong id="timeValue">60</strong>s</span>
         </div>
 
+        <!-- 成就横幅 -->
+        <div class="achieve-banner" id="achieveBanner">
+            <span class="achieve-banner-icon" id="bannerIcon"></span>
+            <span id="bannerText"></span>
+        </div>
+
+        <!-- 成绩面板按钮 -->
+        <button class="records-btn" id="btnRecords" title="历史最佳">🏆</button>
+
+        <!-- 成绩面板 -->
+        <div class="records-panel" id="recordsPanel">
+            <div class="records-header">
+                <span>🏆 历史最佳</span>
+                <button class="records-close" id="btnRecordsClose">✕</button>
+            </div>
+            <div class="records-body">
+                <div class="records-row">
+                    <span>🔥 最高连消</span>
+                    <span class="records-val" id="recChain">-</span>
+                </div>
+                <div class="records-row">
+                    <span>⭐ 最高分</span>
+                    <span class="records-val" id="recScore">-</span>
+                </div>
+                <div class="records-row">
+                    <span>💎 总消除</span>
+                    <span class="records-val" id="recCleared">-</span>
+                </div>
+                <div class="records-row">
+                    <span>✨ 最高 Vibe</span>
+                    <span class="records-val vibe" id="recVibe">-</span>
+                </div>
+            </div>
+            <div class="records-footer" id="achievementsList"></div>
+        </div>
+
+        <!-- 成就弹窗 -->
+        <div class="achieve-overlay" id="achieveOverlay">
+            <div class="achieve-card">
+                <div class="achieve-icon" id="achieveIcon"></div>
+                <h2 id="achieveTitle"></h2>
+                <p id="achieveDesc"></p>
+            </div>
+        </div>
+
         <!-- 画布区域 -->
         <div class="canvas-wrapper" id="canvasWrapper">
             <canvas id="gameCanvas" width="552" height="552"></canvas>
@@ -93,12 +138,15 @@
     <script src="js/core/Gravity.js?v=2"></script>
     <script src="js/core/PowerUp.js?v=2"></script>
     <script src="js/core/ScoreManager.js?v=2"></script>
-    <script src="js/core/GameEngine.js?v=2"></script>
-    <script src="js/render/AnimateManager.js?v=2"></script>
+    <script src="js/core/GameEngine.js?v=3"></script>
+    <script src="js/core/AchievementManager.js?v=3"></script>
+    <script src="js/storage/StorageManager.js?v=3"></script>
+    <script src="js/audio/AudioManager.js?v=3"></script>
+    <script src="js/render/AnimateManager.js?v=3"></script>
     <script src="js/render/Renderer.js?v=2"></script>
     <script src="js/input/InputManager.js?v=2"></script>
     <script src="js/system/UISystem.js?v=2"></script>
-    <script src="js/main.js?v=2"></script>
+    <script src="js/main.js?v=3"></script>
     <script src="js/starfield.js"></script>
     <script>
       if ('serviceWorker' in navigator) {

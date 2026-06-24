@@ -122,6 +122,26 @@ class UISystem {
             if (this.el.gameOverDetail) this.el.gameOverDetail.textContent = detail;
             this.el.gameOverPanel.style.display = 'flex';
         }
+        // 更新 localStorage 记录
+        if (summary.score > 0 || summary.totalEliminated > 0) {
+            StorageManager.setMax(StorageManager.KEYS.bestScore, summary.score);
+            StorageManager.setMax(StorageManager.KEYS.bestChain, summary.maxChainEver || 0);
+            StorageManager.setMax(StorageManager.KEYS.bestVibe, summary.vibe || 0);
+            StorageManager.add(StorageManager.KEYS.totalCleared, summary.totalEliminated || 0);
+            this._updateRecordsPanel();
+        }
+    }
+
+    /** 更新成绩面板 */
+    updateRecordsPanel() { this._updateRecordsPanel(); }
+
+    _updateRecordsPanel() {
+        const r = StorageManager.getAllRecords();
+        if (this.el.recChain) this.el.recChain.textContent = r.bestChain;
+        if (this.el.recScore) this.el.recScore.textContent = r.bestScore;
+        if (this.el.recCleared) this.el.recCleared.textContent = r.totalCleared;
+        const vibeLabels = ['','calm ✦','nice ✦✦','feeling it ✦✦✦','on fire ✦✦✦✦','transcendent ✦✦✦✦✦'];
+        if (this.el.recVibe) this.el.recVibe.textContent = vibeLabels[r.bestVibe] || '-';
     }
 
     hideGameOver() {

@@ -32,7 +32,12 @@
         // 弹窗
         gameOverPanel: document.getElementById('gameOverPanel'),
         gameOverTitle: document.getElementById('gameOverTitle'),
-        gameOverDetail: document.getElementById('gameOverDetail')
+        gameOverDetail: document.getElementById('gameOverDetail'),
+        // v1.3 成绩面板
+        recChain: document.getElementById('recChain'),
+        recScore: document.getElementById('recScore'),
+        recCleared: document.getElementById('recCleared'),
+        recVibe: document.getElementById('recVibe')
     };
 
     // ========== 核心模块初始化 ==========
@@ -41,6 +46,8 @@
     const animator = new AnimateManager(engine);
     const inputMgr = new InputManager(canvas, engine);
     const uiSystem = new UISystem(engine, elements);
+    const audio = new AudioManager();
+    const achievements = AchievementManager;
 
     // 让 Renderer 可以访问 AnimateManager 的浮字数据
     engine._animatorRef = animator;
@@ -255,6 +262,87 @@
     engine.on('boardReset', () => {
         renderer.setBorderGlowLevel(0);
     });
+
+    // ========== v1.3 音效 + 成就事件桥接 ==========
+
+    engine.on('audioSelect', () => audio.select());
+    engine.on('audioSwap', () => audio.swap());
+    engine.on('invalidSwap', () => audio.invalidSwap());
+    engine.on('audioEliminate', (d) => audio.eliminate(d.count));
+    engine.on('audioCombo', (d) => audio.combo(d.level));
+
+    engine.on('checkAchievement', (data) => {
+        const unlocked = achievements.check(data.chain);
+        if (unlocked.length === 0) return;
+        const ms = unlocked[0]; // 取最高级别
+        const isFirst = !StorageManager.hasAchievement(ms.id);
+        StorageManager.addAchievement(ms.id);
+
+        if (isFirst) {
+            // 首次达成 → 弹窗庆祝
+            showAchievePopup(ms);
+            audio.milestone();
+        } else {
+            // 重复达成 → 横幅
+            showAchieveBanner(ms);
+        }
+        // 更新成绩面板中的成就列表
+        uiSystem.updateRecordsPanel();
+    });
+
+    function showAchieveBanner(ms) {
+        const banner = document.getElementById('achieveBanner');
+        const icon = document.getElementById('bannerIcon');
+        const text = document.getElementById('bannerText');
+        if (!banner || !icon || !text) return;
+        icon.textContent = ms.icon;
+        text.textContent = ms.title + ' (' + ms.chain + ' 连消)';
+        banner.classList.add('show');
+        clearTimeout(banner._timeout);
+        banner._timeout = setTimeout(() => banner.classList.remove('show'), 2500);
+    }
+
+    function showAchievePopup(ms) {
+        const overlay = document.getElementById('achieveOverlay');
+        if (!overlay) return;
+        document.getElementById('achieveIcon').textContent = ms.icon;
+        document.getElementById('achieveTitle').textContent = ms.title;
+        document.getElementById('achieveDesc').textContent = ms.desc;
+        overlay.classList.add('show');
+        setTimeout(() => overlay.classList.remove('show'), 2500);
+        // 粒子雨效果
+        for (let i = 0; i < 40; i++) {
+            setTimeout(() => {
+                const r = Math.floor(Math.random() * 8);
+                const c = Math.floor(Math.random() * 8);
+                renderer.spawnParticles(r, c, '#FFD700');
+            }, i * 30);
+        }
+    }
+
+    // ========== 成绩面板事件 ==========
+    const btnRecords = document.getElementById('btnRecords');
+    const recordsPanel = document.getElementById('recordsPanel');
+    const btnRecordsClose = document.getElementById('btnRecordsClose');
+    if (btnRecords && recordsPanel) {
+        btnRecords.addEventListener('click', () => {
+            recordsPanel.classList.toggle('open');
+            uiSystem.updateRecordsPanel();
+        });
+    }
+    if (btnRecordsClose && recordsPanel) {
+        btnRecordsClose.addEventListener('click', () => recordsPanel.classList.remove('open'));
+    }
+    // 点击面板外关闭
+    document.addEventListener('click', (e) => {
+        if (recordsPanel && recordsPanel.classList.contains('open') &&
+            !recordsPanel.contains(e.target) && e.target !== btnRecords) {
+            recordsPanel.classList.remove('open');
+        }
+    });
+
+    // 初始化时刷新成绩面板
+    uiSystem.updateRecordsPanel();
 
     // ========== Tab 切换事件 ==========
     if (elements.tabZen) {

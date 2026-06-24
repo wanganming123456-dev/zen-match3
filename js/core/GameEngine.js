@@ -68,6 +68,7 @@ class GameEngine {
         if (!gem) return;
         this.selected = { r: row, c: col };
         this._emit('select', row, col);
+        this._emit('audioSelect');
     }
 
     /** 取消选中 */
@@ -119,6 +120,7 @@ class GameEngine {
         }
 
         // 相邻 → 执行交换
+        this._emit('audioSwap');
         this._trySwap(sel.r, sel.c, row, col);
         return { action: 'swap', from: { r: sel.r, c: sel.c }, to: { r: row, c: col } };
     }
@@ -233,6 +235,11 @@ class GameEngine {
         this._emit('lightBurst', { coords: eliminatedCoords, gemType: matches[0]?.gemType ?? 0 });
         this._emit('scoreFloat', { score: roundScore, coords: eliminatedCoords, comboLevel: comboLevel });
         this._emit('borderGlow', { comboLevel: comboLevel });
+
+        // 音效事件
+        this._emit('audioEliminate', { count: allCoords.size });
+        if (comboLevel >= 2) this._emit('audioCombo', { level: comboLevel });
+        this._emit('checkAchievement', { chain: this.scoreMgr.maxChainEver });
 
         // 从棋盘移除
         for (const coord of eliminatedCoords) {

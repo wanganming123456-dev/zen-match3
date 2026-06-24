@@ -325,6 +325,110 @@ canvas#gameCanvas {
     100% { opacity: 0; transform: translateY(-60px); }
 }
 
+/* ========== v1.3 成绩面板 ========== */
+.records-btn {
+    position: fixed;
+    top: 12px; right: 12px;
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    border: 1px solid rgba(59,130,246,0.2);
+    background: var(--bg-card);
+    color: #FFD700;
+    font-size: 20px;
+    cursor: pointer;
+    z-index: 100;
+    transition: all 0.2s;
+}
+.records-btn:hover { transform: scale(1.1); background: rgba(59,130,246,0.15); }
+
+.records-panel {
+    position: fixed;
+    top: 0; right: -320px;
+    width: 300px; height: 100%;
+    background: var(--bg-panel);
+    border-left: 1px solid var(--border);
+    z-index: 200;
+    transition: right 0.3s ease;
+    display: flex; flex-direction: column;
+    padding: 20px;
+    overflow-y: auto;
+}
+.records-panel.open { right: 0; }
+
+.records-header {
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 18px; font-weight: 700; color: var(--text-accent);
+    margin-bottom: 20px;
+}
+.records-close {
+    background: none; border: none; color: var(--text-muted);
+    font-size: 18px; cursor: pointer;
+}
+
+.records-body { display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px; }
+.records-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 10px 14px; background: rgba(255,255,255,0.03);
+    border-radius: 8px; font-size: 14px;
+}
+.records-val { font-weight: 700; color: var(--text-accent); font-size: 18px; }
+.records-val.vibe { font-size: 14px; letter-spacing: 1px; }
+
+.records-footer { border-top: 1px solid var(--border); padding-top: 16px; }
+.records-footer .achieve-item {
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px; font-size: 13px; color: var(--text-muted);
+}
+
+/* ========== v1.3 成就横幅 ========== */
+.achieve-banner {
+    position: fixed;
+    top: -60px; left: 50%; transform: translateX(-50%);
+    background: linear-gradient(135deg, #6366F1, #4F46E5);
+    color: #fff; padding: 10px 24px;
+    border-radius: 0 0 12px 12px;
+    font-size: 15px; font-weight: 700;
+    z-index: 150;
+    transition: top 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: flex; align-items: center; gap: 8px;
+    box-shadow: 0 4px 20px rgba(99,102,241,0.4);
+}
+.achieve-banner.show { top: 0; }
+.achieve-banner-icon { font-size: 22px; }
+
+/* ========== v1.3 成就弹窗 ========== */
+.achieve-overlay {
+    position: fixed; top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.7);
+    backdrop-filter: blur(6px);
+    z-index: 300;
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.3s;
+}
+.achieve-overlay.show { opacity: 1; pointer-events: auto; }
+
+.achieve-card {
+    background: var(--bg-panel);
+    border: 1px solid rgba(99,102,241,0.3);
+    border-radius: 20px;
+    padding: 40px;
+    text-align: center;
+    box-shadow: 0 0 60px rgba(99,102,241,0.3);
+    animation: achievePop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.achieve-icon { font-size: 64px; margin-bottom: 12px; }
+.achieve-card h2 {
+    font-size: 28px; color: var(--text-accent); margin-bottom: 8px;
+}
+.achieve-card p { font-size: 14px; color: var(--text-muted); }
+
+@keyframes achievePop {
+    0% { transform: scale(0.5); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
 /* ========== 响应式：移动端 ========== */
 @media (max-width: 600px) {
     .game-container {
