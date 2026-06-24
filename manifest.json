@@ -1,0 +1,17 @@
+{
+  "name": "Zen 消消乐",
+  "short_name": "Zen消消乐",
+  "description": "深海幽蓝主题课间解压消除游戏 - 无限消除，永不失败",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#0a1628",
+  "theme_color": "#0a1628",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}
