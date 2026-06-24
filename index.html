@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>🧘 Zen 消消乐</title>
+    <link rel="stylesheet" href="css/style.css?v=2">
+</head>
+<body>
+
+    <div class="game-container">
+        <!-- 顶部模式切换 Tab -->
+        <div class="tab-bar">
+            <button class="tab-btn active" id="tabZen">🧘 Zen</button>
+            <button class="tab-btn" id="tabChallenge">⚔ Challenge</button>
+        </div>
+
+        <!-- Zen 模式状态条 -->
+        <div class="zen-hud" id="zenHud">
+            <div class="hud-item">
+                <span class="hud-label">🔥 连消次数</span>
+                <span class="hud-value" id="zenChain">0</span>
+            </div>
+            <div class="hud-divider"></div>
+            <div class="hud-item">
+                <span class="hud-label">💥 最大消除</span>
+                <span class="hud-value" id="zenBest">0</span>
+            </div>
+            <div class="hud-divider"></div>
+            <div class="hud-item">
+                <span class="hud-label">✨ 满足度</span>
+                <span class="hud-value vibe" id="zenVibe">calm ✦</span>
+            </div>
+        </div>
+
+        <!-- Challenge 模式状态条 -->
+        <div class="challenge-hud" id="challengeHud" style="display:none;">
+            <div class="hud-item">
+                <span class="hud-label">🏆 分数</span>
+                <span class="hud-value" id="scoreValue">0</span>
+            </div>
+            <div class="hud-divider"></div>
+            <div class="hud-item" id="movesPanel">
+                <span class="hud-label">👣 剩余步数</span>
+                <span class="hud-value" id="movesValue">30</span>
+            </div>
+            <div class="hud-divider"></div>
+            <div class="hud-item">
+                <span class="hud-label">🔥 连击</span>
+                <span class="hud-value combo" id="comboValue" style="display:none;">-</span>
+            </div>
+        </div>
+
+        <!-- 时间模式计时（Challenge 专属） -->
+        <div class="time-bar" id="timePanel" style="display:none;">
+            <span>⏱️ 剩余时间: <strong id="timeValue">60</strong>s</span>
+        </div>
+
+        <!-- 画布区域 -->
+        <div class="canvas-wrapper" id="canvasWrapper">
+            <canvas id="gameCanvas" width="552" height="552"></canvas>
+
+            <!-- 游戏结束弹窗（Challenge 模式用） -->
+            <div class="game-over-overlay" id="gameOverPanel">
+                <h2 id="gameOverTitle">游戏结束</h2>
+                <p id="gameOverDetail"></p>
+                <button class="btn btn-primary" id="btnRestart">再来一局</button>
+            </div>
+        </div>
+
+        <!-- 底部操作按钮 -->
+        <div class="bottom-bar">
+            <button class="btn btn-primary" id="btnNewGame">🔄 换一局</button>
+        </div>
+    </div>
+
+    <!-- JS 加载顺序（v=2 破缓存） -->
+    <script src="js/config.js?v=2"></script>
+    <script src="js/core/Gem.js?v=2"></script>
+    <script src="js/core/Board.js?v=2"></script>
+    <script src="js/core/Matcher.js?v=2"></script>
+    <script src="js/core/Gravity.js?v=2"></script>
+    <script src="js/core/PowerUp.js?v=2"></script>
+    <script src="js/core/ScoreManager.js?v=2"></script>
+    <script src="js/core/GameEngine.js?v=2"></script>
+    <script src="js/render/AnimateManager.js?v=2"></script>
+    <script src="js/render/Renderer.js?v=2"></script>
+    <script src="js/input/InputManager.js?v=2"></script>
+    <script src="js/system/UISystem.js?v=2"></script>
+    <script src="js/main.js?v=2"></script>
+</body>
+</html>
