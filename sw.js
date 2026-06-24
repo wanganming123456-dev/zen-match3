@@ -1,5 +1,5 @@
-// Service Worker — 离线缓存所有游戏资源
-const CACHE_NAME = 'zen-match3-v1';
+// Service Worker — 网络优先，回退缓存 (自动更新)
+const CACHE_NAME = 'zen-match3-v2';
 const FILES = [
   '.',
   'index.html',
@@ -17,11 +17,12 @@ const FILES = [
   'js/input/InputManager.js',
   'js/system/UISystem.js',
   'js/main.js',
+  'js/starfield.js',
   'manifest.json',
   'icons/icon-192.png'
 ];
 
-// 安装：预缓存所有文件
+// 安装：预缓存文件
 self.addEventListener('install', (e) => {
   e.waitUntil(
     caches.open(CACHE_NAME).then((cache) => cache.addAll(FILES))
@@ -29,7 +30,7 @@ self.addEventListener('install', (e) => {
   self.skipWaiting();
 });
 
-// 激活：清理旧缓存
+// 激活：删除所有旧版本缓存
 self.addEventListener('activate', (e) => {
   e.waitUntil(
     caches.keys().then((keys) =>
@@ -39,9 +40,18 @@ self.addEventListener('activate', (e) => {
   self.clients.claim();
 });
 
-// 请求：缓存优先
+// 请求：网络优先，失败时回退缓存（确保始终拿到最新版本）
 self.addEventListener('fetch', (e) => {
   e.respondWith(
-    caches.match(e.request).then((cached) => cached || fetch(e.request))
+    fetch(e.request)
+      .then((response) => {
+        // 网络成功 → 更新缓存
+        if (response.ok && e.request.method === 'GET') {
+          const clone = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(e.request, clone));
+        }
+        return response;
+      })
+      .catch(() => caches.match(e.request))
   );
 });

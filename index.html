@@ -102,7 +102,11 @@
     <script src="js/starfield.js"></script>
     <script>
       if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('sw.js');
+        navigator.serviceWorker.getRegistrations().then(function(regs) {
+          for (let reg of regs) reg.unregister();
+        }).then(function() {
+          navigator.serviceWorker.register('sw.js');
+        });
       }
     </script>
 </body>
