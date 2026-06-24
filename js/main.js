@@ -98,6 +98,9 @@
 
     // ========== 启动/重启游戏 ==========
     function startGame(mode) {
+        // 保存当前局的成绩（Zen 模式下 gameOver 不会触发，在这里存）
+        saveCurrentRecords();
+
         currentMode = mode || 'zen';
         engine.destroy();
         animator.clear();
@@ -115,6 +118,18 @@
         uiSystem.setMode(currentMode);
         uiSystem.init();
         updateHudVisibility();
+    }
+
+    function saveCurrentRecords() {
+        if (!engine.scoreMgr) return;
+        const s = engine.scoreMgr.getSummary();
+        if (s.score > 0 || s.totalEliminated > 0) {
+            StorageManager.setMax(StorageManager.KEYS.bestScore, s.score);
+            StorageManager.setMax(StorageManager.KEYS.bestChain, s.maxChainEver || 0);
+            StorageManager.setMax(StorageManager.KEYS.bestVibe, s.vibe || 0);
+            StorageManager.add(StorageManager.KEYS.totalCleared, s.totalEliminated || 0);
+            uiSystem.updateRecordsPanel();
+        }
     }
 
     function updateHudVisibility() {
